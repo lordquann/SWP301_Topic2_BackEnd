@@ -9,8 +9,8 @@ import jakarta.persistence.*;
 public class User {
     @Id
     @Column(name="id", length = 255)
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     @Column(name="username", length = 255)
     private String username;
     @Column(name="role", length = 255)
@@ -20,18 +20,18 @@ public class User {
     public User() {
     }
 
-    public User(String id, String username, String role, String password) {
+    public User(int id, String username, String role, String password) {
         this.id = id;
         this.username = username;
         this.role = role;
         this.password = password;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

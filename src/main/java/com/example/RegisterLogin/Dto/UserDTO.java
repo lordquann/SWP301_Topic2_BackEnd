@@ -1,25 +1,25 @@
 package com.example.RegisterLogin.Dto;
 
 public class UserDTO {
-    private String id;
+    private int id;
     private String username;
     private String role;
     private String password;
     public UserDTO() {
     }
 
-    public UserDTO(String id, String username, String role, String password) {
+    public UserDTO(int id, String username, String role, String password) {
         this.id = id;
         this.username = username;
         this.role = role;
         this.password = password;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
