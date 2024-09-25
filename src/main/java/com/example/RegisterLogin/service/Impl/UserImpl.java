@@ -4,29 +4,54 @@ import com.example.RegisterLogin.Dto.LoginDTO;
 import com.example.RegisterLogin.Entity.User;
 import com.example.RegisterLogin.Repository.UserRepo;
 import com.example.RegisterLogin.response.LoginMessage;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.validation.BindingResult;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
+
 @Service
 public class UserImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
-    public String addUser(UserDTO userDTO) {
+    public String addUser(UserDTO userDTO, BindingResult bindingResult) {
+        if ((userDTO.getPhone() == null || userDTO.getPhone().isEmpty()) &&
+                (userDTO.getEmail() == null || userDTO.getEmail().isEmpty())) {
+            throw new IllegalArgumentException("Phải nhập số điện thoại hoặc email.");
+        }
+        if (userDTO.getPhone() != null && !userDTO.getPhone().isEmpty()) {
+            if (!userDTO.getPhone().matches("^[0-9]{10}$")) {
+                return "Số điện thoại phải có 10 số";
+            }
+        }
+        if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty()) {
+            if (!userDTO.getEmail().matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+                return "Email phải có đuôi @gmail.com";
+            }
+        }
+        String username;
+        if (userDTO.getPhone() != null && !userDTO.getPhone().isEmpty()) {
+            username = userDTO.getPhone();
+        } else {
+            username = userDTO.getEmail();
+        }
         User user = new User(
                 userDTO.getId(),
-                userDTO.getUsername(),
+                username,
                 userDTO.getRole(),
                 this.passwordEncoder.encode(userDTO.getPassword())
         );
         userRepo.save(user);
-        return user.getUsername();
+        return "Register successful, welcome " + username;
     }
+
     @Override
     public LoginMessage loginUser(LoginDTO loginDTO) {
         String msg = "";

@@ -1,16 +1,20 @@
 package com.example.RegisterLogin.Dto;
 
+import jakarta.validation.constraints.Pattern;
+
 public class UserDTO {
     private int id;
-    private String username;
+    private String phone;
+    private String email;
     private String role;
     private String password;
     public UserDTO() {
     }
 
-    public UserDTO(int id, String username, String role, String password) {
+    public UserDTO(int id, String phone, String email, String role, String password) {
         this.id = id;
-        this.username = username;
+        this.phone = phone;
+        this.email = email;
         this.role = role;
         this.password = password;
     }
@@ -23,12 +27,20 @@ public class UserDTO {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getRole() {
