@@ -3,8 +3,10 @@ import com.example.RegisterLogin.Dto.UserDTO;
 import com.example.RegisterLogin.Dto.LoginDTO;
 import com.example.RegisterLogin.response.LoginMessage;
 import com.example.RegisterLogin.service.Impl.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
@@ -20,9 +22,12 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String addUser(@RequestBody UserDTO userDTO)
-    {
-        String id = userService.addUser(userDTO);
+    public String addUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
+        if ((userDTO.getPhone() == null || userDTO.getPhone().isEmpty()) &&
+                (userDTO.getEmail() == null || userDTO.getEmail().isEmpty())) {
+            return "Phải nhập số điện thoại hoặc email.";
+        }
+        String id = userService.addUser(userDTO, bindingResult);
         return id;
     }
 
